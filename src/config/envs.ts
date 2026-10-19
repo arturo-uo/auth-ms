@@ -1,3 +1,4 @@
+import { JwtModule } from '@nestjs/jwt'
 import 'dotenv/config'
 
 import * as joi from 'joi'
@@ -5,11 +6,13 @@ import * as joi from 'joi'
 interface EnvVars{
 	PORT: number
   	NATS_SERVERS: string[]
+	JWT_SECRET: string
 }
 
 const envsSchema = joi.object<EnvVars>({
 	PORT: joi.number().required(),
-  	NATS_SERVERS: joi.array().items(joi.string()).required()
+  	NATS_SERVERS: joi.array().items(joi.string()).required(),
+	JWT_SECRET: joi.string().required()
 })
 .unknown()
 
@@ -26,5 +29,6 @@ const envVars: EnvVars = value as EnvVars
 
 export const envs = {
 	port: envVars.PORT,
-  	natsServers: envVars.NATS_SERVERS
+  	natsServers: envVars.NATS_SERVERS,
+	jwtSecret: envVars.JWT_SECRET
 }
